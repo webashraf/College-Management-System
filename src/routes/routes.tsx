@@ -5,8 +5,8 @@ import Contact from "../pages/Contact";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import { routesGenaratior } from "../utils/routesGenarator";
-import { adminPaths } from "./admin.routes";
 import { facultyPaths } from "./faculty.routes";
+import { adminPaths } from "./admin.routes";
 
 const router = createBrowserRouter([
   {

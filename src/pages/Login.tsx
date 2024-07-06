@@ -20,7 +20,6 @@ const Login = () => {
   });
 
   const [login] = useLoginMutation();
-  // console.log(error);
 
   const onSubmit = async (data: FieldValues) => {
     const toastLoding = toast.loading("Logging in");

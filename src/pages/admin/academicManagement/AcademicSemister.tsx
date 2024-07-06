@@ -6,7 +6,7 @@ const AcademicSemister = () => {
   console.log('academicSemister =>', data);
   return (
     <div>
-      <h1>Academic Semister</h1>
+      <h1>Academic Semister </h1>
     </div>
   );
 };

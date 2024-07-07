@@ -1,4 +1,11 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryApi,
+  BaseQueryFn,
+  createApi,
+  DefinitionType,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { AnyObject } from "antd/es/_util/type";
 import { logout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
@@ -15,7 +22,11 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithExtraOptions = async (args, api, extraOptions) => {
+const baseQueryWithExtraOptions: BaseQueryFn<
+  FetchArgs,
+  BaseQueryApi,
+  DefinitionType
+> = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
 
   console.log("Base query", result);

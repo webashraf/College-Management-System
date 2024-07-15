@@ -7,6 +7,7 @@ import {
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 import { AnyObject } from "antd/es/_util/type";
+import { toast } from "sonner";
 import { logout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
@@ -30,6 +31,10 @@ const baseQueryWithExtraOptions: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   console.log("Base query", result);
+
+  if (result?.error?.status === 404) {
+    toast.error("User not found");
+  }
 
   if (result?.error?.status === 401) {
     console.log("error = 401", result.error);

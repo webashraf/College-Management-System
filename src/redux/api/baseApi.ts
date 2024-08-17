@@ -13,6 +13,7 @@ import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1/",
+
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -33,7 +34,7 @@ const baseQueryWithExtraOptions: BaseQueryFn<
   console.log("Base query", result);
 
   if (result?.error?.status === 404) {
-    toast.error("User not found");
+    toast.error((result?.error?.data as AnyObject).message);
   }
 
   if (result?.error?.status === 401) {

@@ -8,13 +8,14 @@ import { departmentOptions } from "../../../constents/global";
 import { useCreateAcademicDepartmentMutation } from "../../../redux/features/Admin/academicDepartment.api";
 import { useGetFacultiesQuery } from "../../../redux/features/Admin/academicFaculty.api";
 import { AcademicDepartmentSchema } from "../../../schemas/academicDepartment.schema";
+import { TFaculty } from "../../../types";
 
-const CreateAcademicDepertment = () => {
+const CreateAcademicDepartment = () => {
   const [createAcademicDepartment] = useCreateAcademicDepartmentMutation();
   const { data: faculties } = useGetFacultiesQuery();
 
-  const facultiesForSelectField = faculties?.data?.map((faculty) => ({
-    value: faculty._id,
+  const facultiesForSelectField = faculties?.data?.map((faculty: TFaculty) => ({
+    value: faculty?._id,
     label: faculty.name,
   }));
 
@@ -59,4 +60,4 @@ const CreateAcademicDepertment = () => {
   );
 };
 
-export default CreateAcademicDepertment;
+export default CreateAcademicDepartment;

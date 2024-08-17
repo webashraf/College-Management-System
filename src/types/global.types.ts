@@ -31,3 +31,16 @@ export type TQueryParams = {
   name: string;
   value: boolean | React.Key;
 };
+
+export type TAcademicDepartment = {
+  name: string;
+  academicFaculty: string;
+};
+
+export type TFaculty = {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};

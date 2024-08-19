@@ -1,36 +1,63 @@
-import { Button, Table, TableColumnsType, TableProps } from "antd";
+import {
+  Button,
+  Pagination,
+  Space,
+  Table,
+  TableColumnsType,
+  TableProps,
+} from "antd";
 import { useState } from "react";
 import { useGetStudentsQuery } from "../../../redux/features/Admin/userManagement.api";
-import { TQueryParams } from "../../../types";
-import { TTableData } from "../academicManagement/AcademicSemister";
+import { TQueryParams, TStudents } from "../../../types";
+
+export type TTableData = Pick<
+  TStudents,
+  "_id" | "fullName" | "id" | "gender" | "email" | "academicDepartment"
+>;
 
 const StudentsData = () => {
-  const { data: students, isFetching } = useGetStudentsQuery({});
-  console.log(students?.data);
-
   const [params, setParams] = useState<TQueryParams[]>([]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  const { data: students, isFetching } = useGetStudentsQuery([
+    { name: "limit", value: limit },
+    { name: "page", value: page },
+    { name: "sort", value: "id" },
+    ...params,
+  ]);
+  const { data: paginateStudents } = useGetStudentsQuery(undefined, {
+    skip: isFetching,
+  });
+  console.log(students);
 
   const tableData = students?.data?.map(
-    ({ _id, fullName, gender, email, academicDepartment }) => ({
+    ({ _id, fullName, id, gender, email, academicDepartment }: TTableData) => ({
       key: _id,
       fullName,
+      id,
       gender,
       email,
       academicDepartment: academicDepartment.name,
     })
   );
-  console.log(tableData);
+  // console.log(tableData);
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
-      key: "name",
-      dataIndex: "name",
+      key: "fullName",
+      dataIndex: "fullName",
       showSorterTooltip: { target: "full-header" },
     },
     {
       title: "Gender",
-      key: "gender",
-      dataIndex: "gender",
+      key: "id",
+      dataIndex: "id",
+    },
+    {
+      title: "Roll Number",
+      key: "Roll Number",
+      dataIndex: "Roll Number",
     },
     {
       title: "Email",
@@ -46,10 +73,13 @@ const StudentsData = () => {
       title: "Action",
       key: "Actions",
       render: () => (
-        <div>
+        <Space>
+          <Button>Details</Button>
           <Button>Update</Button>
-        </div>
+          <Button>Block</Button>
+        </Space>
       ),
+      width: "1%",
     },
   ];
 
@@ -76,13 +106,22 @@ const StudentsData = () => {
   };
 
   return (
-    <Table
-      loading={isFetching}
-      columns={columns}
-      dataSource={tableData && tableData}
-      onChange={onChange}
-      showSorterTooltip={{ target: "sorter-icon" }}
-    />
+    <>
+      <Table
+        loading={isFetching}
+        columns={columns}
+        dataSource={tableData && tableData}
+        onChange={onChange}
+        showSorterTooltip={{ target: "sorter-icon" }}
+        pagination={false}
+      />
+      <Pagination
+        onChange={(value) => setPage(value)}
+        pageSize={limit}
+        defaultCurrent={3}
+        total={paginateStudents?.data?.length}
+      />
+    </>
   );
 };
 

@@ -1,4 +1,5 @@
 import { AnyObject } from "antd/es/_util/type";
+import { TQueryParams } from "../../../types";
 import { baseApi } from "../../api/baseApi";
 
 const userManagementApi = baseApi.injectEndpoints({
@@ -11,10 +12,20 @@ const userManagementApi = baseApi.injectEndpoints({
       }),
     }),
     getStudents: builder.query({
-      query: () => ({
-        url: "/students",
-        method: "GET",
-      }),
+      query: (args: TQueryParams[]) => {
+        const params = new URLSearchParams();
+        console.log(args);
+        if (args) {
+          args?.forEach((item: TQueryParams) =>
+            params.append(item?.name, item.value as string)
+          );
+        }
+        return {
+          url: "/students",
+          method: "GET",
+          params,
+        };
+      },
     }),
   }),
 });
